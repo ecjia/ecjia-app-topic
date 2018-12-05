@@ -47,6 +47,7 @@
 namespace Ecjia\App\Topic;
 
 use ecjia_admin_log;
+use RC_Lang;
 
 class Helper
 {

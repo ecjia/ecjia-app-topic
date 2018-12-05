@@ -11,7 +11,7 @@ class admin extends ecjia_admin
     {
         parent::__construct();
 
-        REcjia\App\Topic\Helper::assign_adminlog_content();
+        Ecjia\App\Topic\Helper::assign_adminlog_content();
 
         RC_Loader::load_app_func('common', 'goods');
         RC_Loader::load_app_func('category', 'goods');
