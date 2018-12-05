@@ -141,6 +141,7 @@ return array(
     'invalid_parameter'             => '参数无效',
     'topic'                         => '专题',
     'button_update'                 => '更新',
+    'topic_update'                  => '专题更新',
 
     //js
     'topic_name_required'           => '请输入主题名称！',
