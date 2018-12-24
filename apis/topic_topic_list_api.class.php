@@ -13,6 +13,11 @@ class topic_topic_list_api extends Component_Event_Api
      */
     public function call(&$options)
     {
+    	if (!is_array($options)) 
+    	{
+    		return new ecjia_error('invalid_parameter', '调用api文件topic_list_api参数无效！');
+    	}
+    	
         return $this->topic_list($options);
     }
 
@@ -28,30 +33,30 @@ class topic_topic_list_api extends Component_Event_Api
 
         $filter                 = array();
         $filter['keywords']     = empty($options['keywords']) ? '' : trim($options['keywords']);
-        $filter['is_admin']     = empty($options['is_admin']) ? 0 : 1; //判断是否是后台管理员
-        $filter['page_size']    = empty($options['page_size']) ? 15 : intval($options['page_size']);
-        $filter['current_page'] = empty($options['current_page']) ? 1 : intval($options['current_page']);
+        
+        $size    				= empty($options['size']) ? 15 : 	intval($options['size']);
+        $page    				= empty($options['page']) ? 1 : 	intval($options['page']);
 
         if (!empty($filter['keywords'])) {
             $db_topic->where('title', 'like', '%' . $filter['keywords'] . '%');
         }
-        /* 判断是否是前后台，若前台只显示在活动范围内的*/
-        if ($filter['is_admin'] == 0) {
-            $db_topic->where('start_time', '<=', RC_Time::gmtime())->where('end_time', '>=', RC_Time::gmtime());
-        }
+        
+        $db_topic->where('start_time', '<=', RC_Time::gmtime())->where('end_time', '>=', RC_Time::gmtime());
 
         $count = $db_topic->count();
-
-        $page                   = new ecjia_page($count, $filter['page_size'], 5, '', $filter['current_page']);
-        $filter['record_count'] = $count;
-
-        /* 判断是否需要分页 will.chen*/
-        if ($options == 1) {
-            $db_topic->take($filter['page_size'])->skip($page->start_id - 1);
-        }
+       	$page_row = new ecjia_page($count, $size, 6, '', $page);
+       
+       	$db_topic->take($size)->skip($page->start_id - 1);
+       	
         $result = $db_topic->get();
+        
+        $pager = array(
+				'total' => $page_row->total_records,
+				'count' => $page_row->total_records,
+				'more'	=> $page_row->total_pages <= $page ? 0 : 1,
+		);
 
-        return array('arr' => $result, 'page' => $page);
+        return array('list' => $result, 'page' => $pager);
     }
 }
 // end
