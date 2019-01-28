@@ -115,7 +115,7 @@ class topic_info_module extends api_front implements api_interface
     	$discount = $_SESSION['discount'];
     	$field = "g.goods_id, g.goods_name, g.goods_sn, g.market_price, g.is_new, g.is_best, g.is_hot, g.shop_price AS org_price,".
     			"IFNULL(mp.user_price, g.shop_price * '".$discount."') AS shop_price, ".
-    			"g.promote_price, g.promote_start_date, g.promote_end_date, g.goods_thumb, g.goods_img, g.goods_brief, g.goods_type ";
+    			"g.promote_price, g.promote_start_date, g.promote_end_date, g.goods_thumb, g.goods_img, g.original_img, g.goods_brief, g.goods_type ";
     	
     	$data = $dbveiw->select(RC_DB::raw($field))->take($size)->skip($page->start_id - 1)->get();
     	 
