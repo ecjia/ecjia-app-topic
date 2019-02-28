@@ -33,16 +33,10 @@ class admin extends ecjia_admin
         RC_Script::enqueue_script('bootstrap-datepicker', RC_Uri::admin_url('statics/lib/datepicker/bootstrap-datepicker.min.js'));
         RC_Script::enqueue_script('bootstrap-colorpicker', RC_Uri::admin_url('statics/lib/colorpicker/bootstrap-colorpicker.js'));
         RC_Script::enqueue_script('bootstrap-placeholder', RC_Uri::admin_url('statics/lib/dropper-upload/bootstrap-placeholder.js'), array(), false, true);
+;
+        RC_Script::localize_script('topic', 'js_lang', config('app-topic::jslang.topic_page'));
 
-        $topic_jslang = array(
-            'topic_name_required' => RC_Lang::get('topic::topic.topic_name_required'),
-            'start_time_required' => RC_Lang::get('topic::topic.start_time_required'),
-            'end_time_required'   => RC_Lang::get('topic::topic.end_time_required'),
-            'no_message'          => RC_Lang::get('topic::topic.no_message'),
-        );
-        RC_Script::localize_script('topic', 'js_lang', $topic_jslang);
-
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('topic::topic.topic_list'), RC_Uri::url('topic/admin/init')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('专题列表', 'topic'), RC_Uri::url('topic/admin/init')));
     }
 
     /**
@@ -53,9 +47,9 @@ class admin extends ecjia_admin
         $this->admin_priv('topic_manage', ecjia::MSGTYPE_JSON);
 
         ecjia_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('topic::topic.topic_list')));
-        $this->assign('ur_here', RC_Lang::get('topic::topic.topic_list'));
-        $this->assign('action_link', array('text' => RC_Lang::get('topic::topic.topic_add'), 'href' => RC_Uri::url('topic/admin/add')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('专题列表', 'topic')));
+        $this->assign('ur_here', __('专题列表', 'topic'));
+        $this->assign('action_link', array('text' => __('添加专题', 'topic'), 'href' => RC_Uri::url('topic/admin/add')));
 
         $topic_list = $this->get_topic_list();
         $this->assign('topic_list', $topic_list);
@@ -71,9 +65,9 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('topic_update', ecjia::MSGTYPE_JSON);
 
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('topic::topic.topic_add')));
-        $this->assign('ur_here', RC_Lang::get('topic::topic.topic_add'));
-        $this->assign('action_link', array('href' => RC_Uri::url('topic/admin/init'), 'text' => RC_Lang::get('topic::topic.topic_list')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加专题', 'topic')));
+        $this->assign('ur_here', __('添加专题', 'topic'));
+        $this->assign('action_link', array('href' => RC_Uri::url('topic/admin/init'), 'text' => __('专题列表', 'topic')));
         $this->assign('action', 'insert');
 
         $topic = array(
@@ -150,7 +144,7 @@ class admin extends ecjia_admin
             /* 代码 */
         } else {
             if (empty($_POST['htmls'])) {
-                $this->showmessage(RC_Lang::get('topic::topic.top_html_confirm'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                $this->showmessage(__('代码内容不能为空', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
             $all_img = '';
             $htmls   = !empty($_POST['htmls']) ? $_POST['htmls'] : '';
@@ -193,7 +187,7 @@ class admin extends ecjia_admin
         $topic_css   = !empty($_POST['topic_css']) ? $_POST['topic_css'] : '';
 
         if ($start_time >= $end_time) {
-            $this->showmessage(RC_Lang::get('topic::topic.js_languages.start_lt_end'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            $this->showmessage(__('专题开始时间不能大于或等于结束时间', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         if (empty($_POST['topic_data'])) {
             $tmp_data = array('default' => array());
@@ -218,9 +212,9 @@ class admin extends ecjia_admin
         $topicid = RC_DB::table('topic')->insertGetId($data);
 
         ecjia_admin::admin_log($topic_name, 'add', 'topic');
-        $links[] = array('text' => RC_Lang::get('topic::topic.back_list'), 'href' => RC_Uri::url('topic/admin/init'));
-        $links[] = array('text' => RC_Lang::get('topic::topic.continue_add'), 'href' => RC_Uri::url('topic/admin/add'));
-        $this->showmessage(RC_Lang::get('topic::topic.add_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $topicid))));
+        $links[] = array('text' => __('返回专题列表', 'topic'), 'href' => RC_Uri::url('topic/admin/init'));
+        $links[] = array('text' => __('继续添加专题', 'topic'), 'href' => RC_Uri::url('topic/admin/add'));
+        $this->showmessage(__('添加专题成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $topicid))));
     }
 
     /**
@@ -230,9 +224,9 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('topic_update', ecjia::MSGTYPE_JSON);
 
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('topic::topic.topic_edit')));
-        $this->assign('ur_here', RC_Lang::get('topic::topic.topic_edit'));
-        $this->assign('action_link', array('href' => RC_Uri::url('topic/admin/init'), 'text' => RC_Lang::get('topic::topic.topic_list')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑专题', 'topic')));
+        $this->assign('ur_here', __('编辑专题', 'topic'));
+        $this->assign('action_link', array('href' => RC_Uri::url('topic/admin/init'), 'text' => __('专题列表', 'topic')));
 
         $topic = RC_DB::table('topic')->where('topic_id', intval($_GET['id']))->first();
 
@@ -364,7 +358,7 @@ class admin extends ecjia_admin
         /* 编辑代码类型 */
         elseif ($topic_type == 2) {
             if (empty($_POST['htmls'])) {
-                $this->showmessage(RC_Lang::get('topic::topic.top_html_confirm'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                $this->showmessage(__('代码内容不能为空', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
             if ((strpos($ad_logo, 'http://') === false) && (strpos($ad_logo, 'https://') === false)) {
                 $upload->remove($ad_logo);
@@ -417,7 +411,7 @@ class admin extends ecjia_admin
         $topic_css   = !empty($_POST['topic_css']) ? $_POST['topic_css'] : '';
 
         if ($start_time >= $end_time) {
-            $this->showmessage(RC_Lang::get('topic::topic.js_languages.start_lt_end'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            $this->showmessage(__('专题开始时间不能大于或等于结束时间', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $data = array(
@@ -438,7 +432,7 @@ class admin extends ecjia_admin
 
         ecjia_admin::admin_log($topic_name, 'edit', 'topic');
 
-        $this->showmessage(RC_Lang::get('topic::topic.edit_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $topic_id))));
+        $this->showmessage(__('编辑专题成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $topic_id))));
     }
 
     public function title_picdel()
@@ -454,7 +448,7 @@ class admin extends ecjia_admin
         $data = array('title_pic' => '');
         RC_DB::table('topic')->where('topic_id', $id)->update($data);
 
-        $this->showmessage(RC_Lang::get('topic::topic.delete_category_pic_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $id))));
+        $this->showmessage(__('删除商品分类标题图片成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $id))));
     }
 
     public function delflash()
@@ -470,7 +464,7 @@ class admin extends ecjia_admin
         $data = array('topic_img' => '');
         RC_DB::table('topic')->where('topic_id', $id)->update($data);
 
-        $this->showmessage(RC_Lang::get('topic::topic.delete_flash_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $id))));
+        $this->showmessage(__('删除Flash文件成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $id))));
 
     }
 
@@ -487,7 +481,7 @@ class admin extends ecjia_admin
         $data = array('topic_img' => '');
         RC_DB::table('topic')->where('topic_id', $id)->update($data);
 
-        $this->showmessage(RC_Lang::get('topic::topic.delete_topic_pic_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $id))));
+        $this->showmessage(__('删除专题图片成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/edit', array('id' => $id))));
     }
 
     /**
@@ -505,7 +499,7 @@ class admin extends ecjia_admin
 
         ecjia_admin::admin_log($title, 'edit', 'topic');
 
-        $this->showmessage(RC_Lang::get('topic::topic.edit_topic_name_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+        $this->showmessage(__('编辑专题名称成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**
@@ -525,7 +519,7 @@ class admin extends ecjia_admin
             foreach ($title_list as $v) {
                 ecjia_admin::admin_log($v, 'batch_remove', 'topic');
             }
-            $this->showmessage(RC_Lang::get('topic::topic.bactch_delete_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/init')));
+            $this->showmessage(__('批量删除专题操作成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/init')));
         }
     }
 
@@ -536,11 +530,11 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('topic_manage', ecjia::MSGTYPE_JSON);
 
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('topic::topic.topic_preview')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('专题预览', 'topic')));
         $id = intval($_GET['id']);
-        $this->assign('ur_here', RC_Lang::get('topic::topic.topic_preview'));
-        $this->assign('action_linkedit', array('text' => RC_Lang::get('topic::topic.topic_edit'), 'href' => RC_Uri::url('topic/admin/edit', array('id' => $id))));
-        $this->assign('action_link', array('text' => RC_Lang::get('topic::topic.topic_list'), 'href' => RC_Uri::url('topic/admin/init')));
+        $this->assign('ur_here', __('专题预览', 'topic'));
+        $this->assign('action_linkedit', array('text' => __('编辑专题', 'topic'), 'href' => RC_Uri::url('topic/admin/edit', array('id' => $id))));
+        $this->assign('action_link', array('text' => __('专题列表', 'topic'), 'href' => RC_Uri::url('topic/admin/init')));
 
         $topic = RC_DB::table('topic')->where('topic_id', $id)->first();
         if (!file_exists(RC_Upload::upload_path($topic['topic_img'])) || empty($topic['topic_img'])) {
@@ -603,7 +597,7 @@ class admin extends ecjia_admin
 
         ecjia_admin::admin_log(addslashes($topic['title']), 'remove', 'topic');
 
-        $this->showmessage(RC_Lang::get('topic::topic.delete_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+        $this->showmessage(__('删除专题操作成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**
@@ -613,9 +607,9 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('topic_update', ecjia::MSGTYPE_JSON);
 
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('topic::topic.topic_class')));
-        $this->assign('action_link', array('href' => RC_Uri::url('topic/admin/init'), 'text' => RC_Lang::get('topic::topic.topic_list')));
-        $this->assign('ur_here', RC_Lang::get('topic::topic.topic_class'));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('专题分类', 'topic')));
+        $this->assign('action_link', array('href' => RC_Uri::url('topic/admin/init'), 'text' => __('专题列表', 'topic')));
+        $this->assign('ur_here', __('专题分类', 'topic'));
 
         $topic_id = $_GET['id'];
         $topic    = RC_DB::table('topic')->where('topic_id', $topic_id)->first();
@@ -656,7 +650,7 @@ class admin extends ecjia_admin
         if (!empty($_POST['topic_cat_name'])) {
             $topic_cat_name = $_POST['topic_cat_name'];
         } else {
-            $this->showmessage(RC_Lang::get('topic::topic.topic_category_name_confirm'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            $this->showmessage(__('请输入专题分类名称', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $one = array_keys($topic['topic_cat_name']);
@@ -676,8 +670,8 @@ class admin extends ecjia_admin
         $data = array('data' => $topic_cat);
         RC_DB::table('topic')->where('topic_id', $topic_id)->update($data);
 
-        ecjia_admin::admin_log($topic_cat_name . '，' . RC_Lang::get('topic::topic.topic_name_is') . $topic['title'], 'add', 'topic_cat');
-        $this->showmessage(RC_Lang::get('topic::topic.add_topic_category_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/topic_cat', array('id' => $topic_id))));
+        ecjia_admin::admin_log($topic_cat_name . '，' . __('专题名称为', 'topic'). $topic['title'], 'add', 'topic_cat');
+        $this->showmessage(__('添加专题成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/topic_cat', array('id' => $topic_id))));
     }
 
     /**
@@ -687,9 +681,9 @@ class admin extends ecjia_admin
     {
         $this->admin_priv('topic_update', ecjia::MSGTYPE_JSON);
 
-        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('topic::topic.edit_topic_goods')));
-        $this->assign('ur_here', RC_Lang::get('topic::topic.edit_topic_goods'));
-        $this->assign('action_link', array('href' => RC_Uri::url('topic/admin/init'), 'text' => RC_Lang::get('topic::topic.topic_list')));
+        ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑专题商品', 'topic')));
+        $this->assign('ur_here', __('编辑专题商品', 'topic'));
+        $this->assign('action_link', array('href' => RC_Uri::url('topic/admin/init'), 'text' => __('专题列表', 'topic')));
 
         $topic_id = $_GET['id'];
         $topic    = RC_DB::table('topic')->where('topic_id', intval($_GET['id']))->first();
@@ -765,9 +759,9 @@ class admin extends ecjia_admin
         $data  = array('data' => $goods);
         RC_DB::table('topic')->where('topic_id', $topic_id)->update($data);
 
-        ecjia_admin::admin_log(RC_Lang::get('topic::topic.topic_name_is') . $topic['title'], 'add', 'topic_goods');
+        ecjia_admin::admin_log(__('专题名称为', 'topic'). $topic['title'], 'add', 'topic_goods');
 
-        $this->showmessage(RC_Lang::get('topic::topic.edit_topic_goods_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/topic_goods', array('id' => $topic_id))));
+        $this->showmessage(__('成功修改专题商品', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('topic/admin/topic_goods', array('id' => $topic_id))));
     }
 
     /**
@@ -808,9 +802,9 @@ class admin extends ecjia_admin
         $data  = array('data' => $goods);
         RC_DB::table('topic')->where('topic_id', $topic_id)->update($data);
 
-        ecjia_admin::admin_log($key . '，' . RC_Lang::get('topic::topic.topic_name_is') . $topic['title'], 'remove', 'topic_cat');
+        ecjia_admin::admin_log($key . '，' . __('专题名称为', 'topic'). $topic['title'], 'remove', 'topic_cat');
 
-        $this->showmessage(RC_Lang::get('topic::topic.delete_topic_category_succed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+        $this->showmessage(__('删除专题分类成功', 'topic'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**

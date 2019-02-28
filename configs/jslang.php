@@ -44,24 +44,34 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-namespace Ecjia\App\Topic;
 
-use ecjia_admin_log;
-use RC_Lang;
+/**
+ * js语言包设置
+ */
 
-class Helper
-{
+defined('IN_ECJIA') or exit('No permission resources.');
 
-    /**
-     * 添加管理员记录日志操作对象
-     */
-    public static function assign_adminlog_content()
-    {
-        ecjia_admin_log::instance()->add_object('topic', __('专题', 'topic'));
-        ecjia_admin_log::instance()->add_object('topic_cat', __('专题分类', 'topic'));
-        ecjia_admin_log::instance()->add_object('topic_goods', __('专题商品', 'topic'));
-    }
+return array(
+    //topic
+    'topic_page' =>array(
+        'topic_name_empty'     => __('请输入专题名称', 'topic'),
+        'start_time_empty'     => __('请选择专题开始时间!', 'topic'),
+        'end_time_empty'       => __('请选择专题结束时间!', 'topic'),
+        'delete_topic_confirm' => __('确定删除选中项吗?', 'topic'),
+        'sort_name_exist'      => __('该分类已经存在', 'topic'),
+        'sort_name_empty'      => __('请输入分类名称', 'topic'),
+        'move_item_confirm'    => __('已选商品已经转移到\"className\"分类下', 'topic'),
+        'item_upper_limit'     => __('每个分类下的商品不能超过50个', 'topic'),
+        'start_lt_end'         => __('专题开始时间不能大于或等于结束时间', 'topic'),
 
-}
+        'topic_name_required' => __('请输入主题名称！', 'topic'),
+        'start_time_required' => __('请输入开始日期！', 'topic'),
+        'no_message'          => __('未搜索到商品信息', 'topic'),
 
-// end
+        'ok' =>  __('确定', 'installer'),
+        'cancel' =>  __('取消', 'installer'),
+
+    ),
+
+);
+//end

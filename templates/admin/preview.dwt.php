@@ -42,27 +42,27 @@
 		<div class="accordion-group">
 			<div class="accordion-heading">
 				<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#goods_info_area_submit">
-					<strong>{lang key='topic::topic.topic_information'}</strong>
+					<strong>{t domain="topic"}专题信息{/t}</strong>
 				</a>
 			</div>
 			<div class="accordion-body in collapse" id="goods_info_area_submit">
 				<table class="table table-oddtd m_b0">
 					<tbody class="first-td-no-leftbd">
 						<tr>
-							<td><div align="right"><strong>{lang key='topic::topic.start_time'}</strong></div></td>
+							<td><div align="right"><strong>{t domain="topic"}活动开始时间：{/t}</strong></div></td>
 							<td>{RC_Time::local_date('Y-m-d h:i:s', {$topic.start_time})}</td>
-							<td><div align="right"><strong>{lang key='topic::topic.end_time'}</strong></div></td>
+							<td><div align="right"><strong>{t domain="topic"}活动结束时间：{/t}</strong></div></td>
 							<td>{RC_Time::local_date('Y-m-d h:i:s', {$topic.end_time})}</td>
 						</tr>
 						
 						<tr>
-							<td><div align="right"><strong>{lang key='topic::topic.keywords'}</strong></div></td>
+							<td><div align="right"><strong>{t domain="topic"}关键字：{/t}</strong></div></td>
 							<td>{$topic.keywords}</td>
-							<td><div align="right"><strong>{lang key='topic::topic.description'}</strong></div></td>
+							<td><div align="right"><strong>{t domain="topic"}简单描述：{/t}</strong></div></td>
 							<td>{$topic.description}</td>
 						</tr>
 						<tr>
-							<td><div align="right"><strong>{lang key='topic::topic.topic_desc'}</strong></div></td>
+							<td><div align="right"><strong>{t domain="topic"}专题介绍：{/t}</strong></div></td>
 							<td colspan="3">{$topic.intro}</td>
 						</tr>
 					</tbody>
@@ -90,7 +90,7 @@
 								   	   {assign var=goods_url value=RC_Uri::url('goods/admin/preview',"id={$kk}")}
 								       <div class="imgbox"><a href="{$goods_url}" target="_blank"><img class="thumbnail" src="{$v.goods_thumb}" /></a></div>
 								       <a href="{$goods_url}" target="_blank">{$v.name}</a><br>
-								       	￥{$v.price}{lang key='topic::topic.yuan'}
+								       	￥{$v.price}{t domain="topic"}元{/t}
 									</li>
 								    <!--{/foreach}-->
 							    </ul>
@@ -120,7 +120,7 @@
 								   	   {assign var=goods_url value=RC_Uri::url('goods/admin/preview',"id={$kk}")}
 								       <div class="imgbox"><a href="{$goods_url}" target="_blank"><img class="thumbnail" src="{$v.goods_thumb}" /></a></div>
 								       <a href="{$goods_url}" target="_blank">{$v.name}</a><br>
-								       	￥{$v.price}{lang key='topic::topic.yuan'}
+								       	￥{$v.price}{t domain="topic"}元{/t}
 									</li>
 								    <!--{/foreach}-->
 							    </ul>
@@ -136,13 +136,13 @@
 <!-- {elseif $topic.now lt $topic.start_time} -->
 <table class="table table-striped">
 	<tr>
-		<td class="no-records" colspan="10" style=" border-top: 0px;">{lang key='topic::topic.no_open'}</td>
+		<td class="no-records" colspan="10" style=" border-top: 0px;">{t domain="topic"}该专题开始时间未到，敬请期待。{/t}</td>
 	</tr>
 </table>   
 <!-- {else} -->		
 <table class="table table-striped">
 	<tr>
-		<td class="no-records" colspan="10" style=" border-top: 0px;">{lang key='topic::topic.over'}</td>
+		<td class="no-records" colspan="10" style=" border-top: 0px;">{t domain="topic"}该专题截止日期已到，系统已下架。{/t}</td>
 	</tr>
 </table>   
 <!-- {/if} -->

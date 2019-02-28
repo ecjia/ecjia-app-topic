@@ -15,7 +15,7 @@ class topic_topic_info_api extends Component_Event_Api
     {
         if (!is_array($options)
             || empty($options['topic_id'])) {
-            return new ecjia_error('invalid_parameter', '调用api文件topic_info_api参数无效！');
+            return new ecjia_error('invalid_parameter', __('调用api文件topic_info_api参数无效！', 'topic'));
         }
 
         return $this->topic_info($options);
