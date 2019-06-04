@@ -55,7 +55,7 @@ class admin extends ecjia_admin
         $this->assign('topic_list', $topic_list);
         $this->assign('search_action', RC_Uri::url('topic/admin/init'));
 
-        $this->display('topic_list.dwt');
+        return $this->display('topic_list.dwt');
     }
 
     /**
@@ -78,7 +78,7 @@ class admin extends ecjia_admin
         $this->assign('topic', $topic);
         $this->assign('form_action', RC_Uri::url('topic/admin/insert'));
 
-        $this->display('topic_edit.dwt');
+        return $this->display('topic_edit.dwt');
     }
 
     /**
@@ -279,7 +279,7 @@ class admin extends ecjia_admin
         $this->assign('topic', $topic);
         $this->assign('form_action', RC_Uri::url('topic/admin/update'));
 
-        $this->display('topic_edit.dwt');
+        return $this->display('topic_edit.dwt');
     }
 
     /**
@@ -575,7 +575,7 @@ class admin extends ecjia_admin
         $this->assign('topic_cat', $cat_name);
         $this->assign('topic_cats', $topic_cats);
 
-        $this->display('preview.dwt');
+        return $this->display('preview.dwt');
     }
 
     /**
@@ -628,7 +628,7 @@ class admin extends ecjia_admin
         $this->assign('topic_id', $topic_id);
         $this->assign('form_action', RC_Uri::url('topic/admin/insert_topic_cat', array('id' => $topic_id)));
 
-        $this->display('topic_cat.dwt');
+        return $this->display('topic_cat.dwt');
     }
 
     /**
@@ -716,7 +716,7 @@ class admin extends ecjia_admin
         $this->assign('form_action', RC_Uri::url('topic/admin/insert_topic_goods', array('id' => $topic_id)));
         $this->assign('select_action', RC_Uri::url('topic/admin/topic_goods'));
 
-        $this->display('topic_goods.dwt');
+        return $this->display('topic_goods.dwt');
     }
 
     /**
